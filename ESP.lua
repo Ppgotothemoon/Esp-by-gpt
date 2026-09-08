@@ -6,10 +6,8 @@ _G.EnemyColor = Color3.fromRGB(255, 0, 0)
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
-
 local LocalPlayer = Players.LocalPlayer
 
--- GUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ESP_Toggle"
 ScreenGui.ResetOnSpawn = false
@@ -20,13 +18,15 @@ Button.Size = UDim2.new(0, 80, 0, 28)
 Button.Position = UDim2.new(0, 20, 0, 100)
 Button.Text = "ESP: ON"
 Button.TextSize = 13
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+Button.TextStrokeTransparency = 0
+Button.BackgroundTransparency = 1
+Button.BorderSizePixel = 1
+Button.BorderColor3 = Color3.fromRGB(255, 255, 255)
+Button.Font = Enum.Font.SourceSansBold
 Button.Active = true
-Button.BackgroundTransparency = 0.2
 Button.Parent = ScreenGui
-
--- =========================
--- ESP
--- =========================
 
 local function CreateESP(player)
     if player == LocalPlayer then return end
@@ -72,10 +72,6 @@ local function UpdateESP()
     end
 end
 
--- =========================
--- ปุ่มเปิด / ปิด + ลาก
--- =========================
-
 local dragging = false
 local dragStart
 local startPos
@@ -84,7 +80,6 @@ local moved = false
 Button.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1
     or input.UserInputType == Enum.UserInputType.Touch then
-
         dragging = true
         moved = false
         dragStart = input.Position
@@ -120,9 +115,7 @@ UserInputService.InputEnded:Connect(function(input)
         if dragging and not moved then
             _G.ESPEnabled = not _G.ESPEnabled
 
-            Button.Text = _G.ESPEnabled
-                and "ESP: ON"
-                or "ESP: OFF"
+            Button.Text = _G.ESPEnabled and "ESP: ON" or "ESP: OFF"
 
             UpdateESP()
         end
@@ -130,10 +123,6 @@ UserInputService.InputEnded:Connect(function(input)
         dragging = false
     end
 end)
-
--- =========================
--- ผู้เล่น / ตัวละคร
--- =========================
 
 local function SetupPlayer(player)
     if player == LocalPlayer then return end
@@ -163,7 +152,6 @@ Players.PlayerRemoving:Connect(function(player)
     end
 end)
 
--- อัปเดตสีทีม
 while task.wait(1) do
     UpdateESP()
 end
